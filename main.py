@@ -1,6 +1,5 @@
-def textWordCount(bookText):
-    wordCount = bookText.split()
-    return (f"{len(wordCount)} words found in the document")
+import sys
+from stats import get_num_words
 
 def takeSecond(elem):
     return elem[1]
@@ -21,15 +20,21 @@ def textLetterCount(bookText):
     letterReportList.sort(key=takeSecond, reverse=True)
 
     for item in letterReportList:
-        reportString += f"The '{item[0]}' character was found {item[1]} times\n"
+        reportString += f"{item[0]}: {item[1]}\n"
 
     return (reportString)
 
-with open("books/frankenstein.txt") as f:
-    fileContents = f.read()
-    wordCountString = textWordCount(fileContents)
-    letterCountString = textLetterCount(fileContents)
-    print("--- Begin report of books/frankenstein.txt ---")
-    print(wordCountString + "\n")
-    print(letterCountString)
-    print("--- End report ---")
+if len(sys.argv) < 2:
+    print("Usage: python3 main.py <path_to_book>")
+    sys.exit(1)
+
+else:
+    book_path = sys.argv[1]
+    with open(book_path) as f:
+        fileContents = f.read()
+        wordCountString = get_num_words(fileContents)
+        letterCountString = textLetterCount(fileContents)
+        print(f"--- Begin report of {book_path} ---")
+        print(wordCountString + "\n")
+        print(letterCountString)
+        print("--- End report ---")
